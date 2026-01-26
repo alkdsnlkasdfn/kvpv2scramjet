@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+	<title>Scramjet</title>
+
+	<link rel="shortcut icon" content="favicon.webp" />
+
+	<script src="/scram/scramjet.all.js"></script>
+	<script src="/baremux/index.js"></script>
+
+	<link rel="stylesheet" href="index.css" />
+
+	<!-- Hide the inner Scramjet address bar; we use the outer one -->
+	<style>
+		#sj-form {
+			display: none !important;
+		}
+	</style>
+
+	<script src="register-sw.js" defer></script>
+	<script src="search.js" defer></script>
+	<script src="index.js" defer></script>
+</head>
+
+<body>
+	<div title="Scramjet Logo" class="flex-center logo-wrapper header-center">
+		<h1>KingVonproxy Version 2</h1>
+	</div>
+
+	<form id="sj-form" class="flex-center">
+		<input id="sj-search-engine"
+			   value="https://www.google.com/search?q=%s"
+			   type="hidden" />
+		<input id="sj-address" type="text" placeholder="Search" />
+	</form>
+
+	<div class="desc left-margin">
+		<p id="sj-error"></p>
+		<pre id="sj-error-code"></pre>
+	</div>
+
+	<footer>
+		<div>
+			<span>KingVon LLC &copy;</span>
+		</div>
+	</footer>
+
+	<!-- Helper script: URL (via #sj-address) + title + favicon + audio -->
+	<script>
+		(function () {
+
+			function setup() {
+				const form = document.getElementById("sj-form");
+				const input = document.getElementById("sj-address");
+				if (!form || !input) return;
+
+				// We use Scramjet's own address bar as the source of truth for URL.
+				form.addEventListener("submit", () => {
+					try {
+						const addr = (input.value || "").trim();
+						if (addr) {
+							window.parent.postMessage(
+								{ type: "kv-url", address: addr },
+								"*"
+							);
+						}
+					} catch (e) {
+						console.error("Failed to post URL to parent", e);
+					}
+				});
+
+				// ----- Find proxied frame (for title / icon / audio) -----
+				function findProxiedFrame() {
+					const frames = document.querySelectorAll("iframe");
+					for (const f of frames) {
+						try {
+							const doc = f.contentDocument || f.contentWindow?.document;
+							if (!doc) continue;
+							if (doc.title && doc.title.trim()) {
+								return f;
+							}
+						} catch (e) {
+							// cross-origin / inaccessible, skip
+						}
+					}
+					return null;
+				}
+
+				// ----- Restore + navigate from parent (outer address bar) -----
+				window.addEventListener("message", (e) => {
+					const data = e.data;
+					if (!data) return;
+
+					if (data.type === "kv-restore" || data.type === "kv-navigate") {
+						const address = data.address;
+						if (!address) return;
+
+						try {
+							input.value = address;
+							form.requestSubmit ? form.requestSubmit() : form.submit();
+						} catch (err) {
+							console.error("Failed to handle navigate/restore", err);
+						}
+					}
+				});
+
+				// ----- TITLE + FAVICON + AUDIO from proxied page -----
+				function getPageTitle(frame) {
+					try {
+						const doc = frame.contentDocument || frame.contentWindow?.document;
+						return (doc && doc.title) || "Scramjet";
+					} catch {
+						return "Scramjet";
+					}
+				}
+
+				function getPageFavicon(frame) {
+					try {
+						const doc = frame.contentDocument || frame.contentWindow?.document;
+						if (!doc) return "";
+
+						const selectors = [
+							'link[rel="icon"]',
+							'link[rel="shortcut icon"]',
+							'link[rel="apple-touch-icon"]',
+							'link[rel="apple-touch-icon-precomposed"]'
+						];
+
+						for (const sel of selectors) {
+							const link = doc.querySelector(sel);
+							if (link && link.href) {
+								return link.href;
+							}
+						}
+
+						return ""; // let parent use SVG fallback
+
+					} catch {
+						return "";
+					}
+				}
+
+				function getAudioState(frame) {
+					try {
+						const doc = frame.contentDocument || frame.contentWindow?.document;
+						if (!doc) return false;
+
+						const media = doc.querySelectorAll("video, audio");
+						for (const el of media) {
+							try {
+								if (!el.paused && !el.muted && el.volume > 0) {
+									return true;
+								}
+							} catch { }
+						}
+						return false;
+					} catch {
+						return false;
+					}
+				}
+
+				let lastTitle = "";
+				let lastFav = "";
+				let lastAudio = false;
+				let lastBarAddress = "";
+
+				setInterval(() => {
+					const frame = findProxiedFrame();
+
+					// If there's no proxied frame yet (home screen / idle)
+					if (!frame) {
+						const newTitle = "New Tab";
+						const newFav = ""; // empty → parent uses SVG fallback
+						const isAudio = false;
+
+						if (newTitle !== lastTitle) {
+							lastTitle = newTitle;
+							try {
+								window.parent.postMessage(
+									{ type: "kv-title", title: newTitle },
+									"*"
+								);
+							} catch (e) {
+								console.error("Failed to post title", e);
+							}
+						}
+
+						if (newFav !== lastFav) {
+							lastFav = newFav;
+							try {
+								window.parent.postMessage(
+									{ type: "kv-favicon", favicon: newFav },
+									"*"
+								);
+							} catch (e) {
+								console.error("Failed to post favicon", e);
+							}
+						}
+
+						if (isAudio !== lastAudio) {
+							lastAudio = isAudio;
+							try {
+								window.parent.postMessage(
+									{ type: "kv-audio", isAudio },
+									"*"
+								);
+							} catch (e) {
+								console.error("Failed to post audio state", e);
+							}
+						}
+
+						// also keep outer URL in sync with Scramjet bar when idle
+						const barAddressIdle = (input.value || "").trim();
+						if (barAddressIdle && barAddressIdle !== lastBarAddress) {
+							lastBarAddress = barAddressIdle;
+							try {
+								window.parent.postMessage(
+									{ type: "kv-url", address: barAddressIdle },
+									"*"
+								);
+							} catch (e) {
+								console.error("Failed to post bar URL (idle)", e);
+							}
+						}
+
+						return;
+					}
+
+					const newTitle = getPageTitle(frame) || "";
+					const newFav = getPageFavicon(frame) || "";
+					const isAudio = getAudioState(frame);
+
+					if (newTitle !== lastTitle) {
+						lastTitle = newTitle;
+						try {
+							window.parent.postMessage(
+								{ type: "kv-title", title: newTitle },
+								"*"
+							);
+						} catch (e) {
+							console.error("Failed to post title", e);
+						}
+					}
+
+					if (newFav !== lastFav) {
+						lastFav = newFav;
+						try {
+							window.parent.postMessage(
+								{ type: "kv-favicon", favicon: newFav },
+								"*"
+							);
+						} catch (e) {
+							console.error("Failed to post favicon", e);
+						}
+					}
+
+					if (isAudio !== lastAudio) {
+						lastAudio = isAudio;
+						try {
+							window.parent.postMessage(
+								{ type: "kv-audio", isAudio },
+								"*"
+							);
+						} catch (e) {
+							console.error("Failed to post audio state", e);
+						}
+					}
+
+					// keep outer URL synced to Scramjet's address bar
+					const barAddress = (input.value || "").trim();
+					if (barAddress && barAddress !== lastBarAddress) {
+						lastBarAddress = barAddress;
+						try {
+							window.parent.postMessage(
+								{ type: "kv-url", address: barAddress },
+								"*"
+							);
+						} catch (e) {
+							console.error("Failed to post bar URL", e);
+						}
+					}
+
+				}, 1000); // poll every second
+			}
+
+			if (document.readyState === "loading") {
+				document.addEventListener("DOMContentLoaded", setup);
+			} else {
+				setup();
+			}
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap");
+
+/* ===============================
+   GLOBAL FIXES
+   =============================== */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* ===============================
+   THEME VARIABLES
+   =============================== */
+
+:root {
+	--background-color: #0b0f14;
+	--glass-bg-start: rgba(255, 255, 255, 0.12);
+	--glass-bg-end: rgba(255, 255, 255, 0);
+	--glass-border: rgba(255, 255, 255, 0.18);
+	--text-primary: #ffffff;
+	--text-muted: rgba(255, 255, 255, 0.55);
+	--accent: rgba(255, 0, 0, 0.25);
+}
+
+body.light-theme {
+	--background-color: #f4f6fb;
+	--glass-bg-start: rgba(0, 0, 0, 0.08);
+	--glass-bg-end: rgba(0, 0, 0, 0);
+	--glass-border: rgba(0, 0, 0, 0.18);
+	--text-primary: #111;
+	--text-muted: rgba(0, 0, 0, 0.6);
+}
+
+/* ===============================
+   BODY
+   =============================== */
+
+body {
+	font-family: "Inter", sans-serif;
+	margin: 0;
+	background: var(--background-color);
+	color: var(--text-primary);
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+/* ===============================
+   FLEX HELPERS
+   =============================== */
+
+.flex-center {
+	display: flex;
+	justify-content: center;
+}
+
+.header-center {
+	align-items: center;
+	flex-direction: column;
+	margin-top: 10%;
+}
+
+.left-margin {
+	margin: 0 16px;
+}
+
+/* ===============================
+   IFRAME
+   =============================== */
+
+#sj-frame {
+	position: absolute;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	border: none;
+	background: linear-gradient( 135deg, var(--glass-bg-start), var(--glass-bg-end) );
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+/* ===============================
+   ERROR OUTPUT
+   =============================== */
+
+#sj-error {
+	color: #ff6666 !important;
+	white-space: pre-wrap;
+	font-size: 14px;
+}
+
+#sj-error-code {
+	font-size: 12px;
+	color: var(--text-primary);
+	font-family: "Courier New", monospace;
+	opacity: 0.85;
+}
+
+/* ===============================
+   LOGO
+   =============================== */
+
+.logo {
+	height: 25vh;
+	filter: drop-shadow(0 10px 30px rgba(0,0,0,0.4));
+}
+
+.logo-wrapper .text {
+	font-size: 72px;
+	font-weight: 800;
+	color: var(--text-primary);
+}
+
+.logo-wrapper h1 {
+	margin: 0;
+	font-weight: 600;
+	color: var(--text-primary);
+}
+
+/* ===============================
+   DESCRIPTION
+   =============================== */
+
+.desc p {
+	width: 560px;
+	max-width: 90vw;
+	color: var(--text-muted);
+	line-height: 1.6;
+}
+
+/* ===============================
+   ADDRESS BAR
+   =============================== */
+
+#sj-address {
+	width: 350px;
+	max-width: 90vw;
+	height: 48px;
+	padding: 0 18px;
+	margin-top: 8px;
+	border-radius: 24px;
+	background: linear-gradient( 135deg, var(--glass-bg-start), var(--glass-bg-end) );
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 1px solid var(--glass-border);
+	color: var(--text-primary);
+	font-family: "Courier New", monospace;
+	font-size: 14px;
+	outline: none;
+	transition: all 0.15s ease;
+}
+
+	#sj-address:focus {
+		border-color: var(--accent);
+		box-shadow: 0 0 0 2px rgba(255,0,0,0.15);
+	}
+
+/* ===============================
+   FOOTER
+   =============================== */
+
+footer {
+	margin: auto 16px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+	footer > div {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 12px;
+	}
+
+	footer a,
+	footer span {
+		text-decoration: none;
+		color: var(--text-primary);
+		font-size: 14px;
+		opacity: 0.85;
+	}
+
+		footer a:hover {
+			opacity: 1;
+			text-decoration: underline;
+		}
+
+/* ===============================
+   CREDIT / LICENSE
+   =============================== */
+
+.credit {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	padding: 12px;
+	border-radius: 16px;
+	background: linear-gradient( 135deg, var(--glass-bg-start), var(--glass-bg-end) );
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border: 1px solid var(--glass-border);
+	color: var(--text-primary);
+}
+
+	.credit label {
+		margin-left: auto;
+		cursor: pointer;
+	}
+
+	.credit a,
+	.credit label {
+		color: var(--text-primary);
+		text-decoration: underline;
+		font-size: 13px;
+	}
+
+	.credit pre {
+		display: none;
+		width: 100%;
+		margin-top: 10px;
+		font-size: 12px;
+		opacity: 0.8;
+	}
+
+	/* Toggle text */
+	.credit label::after {
+		content: "show license";
+	}
+
+	.credit input:checked + label::after {
+		content: "hide license";
+	}
+
+	.credit input:checked ~ pre {
+		display: block;
+	}
