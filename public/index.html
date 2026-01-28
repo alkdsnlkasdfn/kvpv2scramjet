@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" id="tab-favicon" href="clever.png" />
     <title id="t">Clever | Log in</title>
+
     <script>
         window.onbeforeunload = function (e) {
             return 'Are you sure you want to leave this page?  You will lose any unsaved data.';
@@ -17,6 +18,7 @@
             });
         }
     </script>
+
     <script>
         document.onkeydown = function (e) {
             if (e.keyCode == 123) {
@@ -39,11 +41,18 @@
             }
         }
         document.addEventListener('contextmenu',
-
             event => event.preventDefault()
-
         )
     </script>
+
+    <!-- 🔥 REAL POPADS CODE IN HEAD 🔥 -->
+    <script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+(function(){var p=window,x="dc51e6419d6fca60eb7a5aeeda5b4503",a=[["siteId",698-552+465*629-437+4979973],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],r=["d3d3LmRpc3BsYXl2ZXJ0aXNpbmcuY29tL29qc29uZWRpdG9yLm1pbi5jc3M=","ZDNtem9rdHk5NTFjNXcuY2xvdWRmcm9udC5uZXQvZHhxcUhrL2xodW1hbmUubWluLmpz"],e=-1,u,l,w=function(){clearTimeout(l);e++;if(r[e]&&!(1795559479000<(new Date).getTime()&&1<e)){u=p.document.createElement("script");u.type="text/javascript";u.async=!0;var c=p.document.getElementsByTagName("script")[0];u.src="https://"+atob(r[e]);u.crossOrigin="anonymous";u.onerror=w;u.onload=function(){clearTimeout(l);p[x.slice(0,16)+x.slice(0,16)]||w()};l=setTimeout(w,5E3);c.parentNode.insertBefore(u,c)}};if(!p[x]){try{Object.freeze(p[x]=a)}catch(e){}w()}})();
+/*]]>/* */
+    </script>
+    <!-- 🔥 END POPADS CODE 🔥 -->
+
     <style>
         * {
             box-sizing: border-box;
@@ -113,20 +122,20 @@
             white-space: nowrap;
         }
 
-            .tab.active {
-                background: #3a3a3a;
-            }
+        .tab.active {
+            background: #3a3a3a;
+        }
 
-            .tab button {
-                background: none;
-                border: none;
-                color: #aaa;
-                cursor: pointer;
-            }
+        .tab button {
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+        }
 
-                .tab button:hover {
-                    color: #ff5555;
-                }
+        .tab button:hover {
+            color: #ff5555;
+        }
 
         .tab-icon {
             width: 16px;
@@ -150,9 +159,9 @@
             font-size: 18px;
         }
 
-            #newTabBtn:hover {
-                background: #3a3a3a;
-            }
+        #newTabBtn:hover {
+            background: #3a3a3a;
+        }
 
         /* Wrapper for iframe content + ad space */
         .content-wrapper {
@@ -219,14 +228,9 @@
         <div class="content-wrapper">
             <div class="content" id="content"></div>
 
-            <!-- ⭐ AD SPACE ⭐ -->
+            <!-- ⭐ AD SPACE (visual only; PopAds handled by HEAD script) ⭐ -->
             <div id="ads-container">
-                <!-- PLACE YOUR AD CODE HERE -->
-                <script type="text/javascript" data-cfasync="false">
-/*<![CDATA[/* */
-(function(){var h=window,l="dc51e6419d6fca60eb7a5aeeda5b4503",a=[["siteId",308-766-947*715*75+56055500],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],z=["d3d3LmRpc3BsYXl2ZXJ0aXNpbmcuY29tL3pqc29uZWRpdG9yLm1pbi5jc3M=","ZDNtem9rdHk5NTFjNXcuY2xvdWRmcm9udC5uZXQveXUvdGh1bWFuZS5taW4uanM="],x=-1,c,k,p=function(){clearTimeout(k);x++;if(z[x]&&!(1795558587000<(new Date).getTime()&&1<x)){c=h.document.createElement("script");c.type="text/javascript";c.async=!0;var j=h.document.getElementsByTagName("script")[0];c.src="https://"+atob(z[x]);c.crossOrigin="anonymous";c.onerror=p;c.onload=function(){clearTimeout(k);h[l.slice(0,16)+l.slice(0,16)]||p()};k=setTimeout(p,5E3);j.parentNode.insertBefore(c,j)}};if(!h[l]){try{Object.freeze(h[l]=a)}catch(e){}p()}})();
-/*]]>/* */
-</script>
+                Advertisement
             </div>
         </div>
     </div>
