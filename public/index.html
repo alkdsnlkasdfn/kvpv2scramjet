@@ -2,52 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" id="tab-favicon" href="clever.png" />
-    <title id="t">Clever | Log in</title>
-
-    <script>
-        window.onbeforeunload = function (e) {
-            return 'Are you sure you want to leave this page?  You will lose any unsaved data.';
-        };
-    </script>
-
-    <script>
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("/uv/sw.js");
-            });
-        }
-    </script>
-
-    <script>
-        document.onkeydown = function (e) {
-            if (e.keyCode == 123) {
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-                return false;
-            }
-        }
-        document.addEventListener('contextmenu',
-            event => event.preventDefault()
-        )
-    </script>
-
-    <!-- 🔥 REAL POPADS CODE IN HEAD 🔥 -->
-
-    <!-- 🔥 END POPADS CODE 🔥 -->
+    <title>KingVonProxy</title>
 
     <style>
         * {
@@ -224,9 +179,10 @@
         <div class="content-wrapper">
             <div class="content" id="content"></div>
 
-            <!-- ⭐ AD SPACE (visual only; PopAds handled by HEAD script) ⭐ -->
+            <!-- ⭐ AD SPACE ⭐ -->
             <div id="ads-container">
-                Advertisement
+                <!-- PLACE YOUR AD CODE HERE -->
+                <span>Your ad goes here</span>
             </div>
         </div>
     </div>
