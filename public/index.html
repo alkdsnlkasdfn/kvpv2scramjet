@@ -150,6 +150,20 @@
             background: #3a3a3a;
         }
 
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: black;
+        }
+
+        .content {
+            flex: 1;
+            position: relative;
+            background: black;
+            overflow: hidden;
+        }
+
         iframe {
             position: absolute;
             inset: 0;
@@ -177,6 +191,10 @@
             <div class="tabs" id="tabs"></div>
 
             <button id="newTabBtn">+</button>
+        </div>
+
+        <div class="content-wrapper">
+            <div class="content" id="content"></div>
         </div>
     </div>
 
